@@ -1,0 +1,16 @@
+TXT to CSV conversion successful.
+Program exited.
+[2025-05-21 12:45:42] PDF to TXT conversion successful.
+[2025-05-21 12:45:42] PDF to TXT conversion successful.
+[2025-05-21 12:46:08] File 'logs.txt' read successfully.
+[2025-05-21 12:46:08] File 'logs.txt' read successfully.
+[2025-05-21 14:36:32] Conversion failed. Ensure `txt2pdf` is installed.
+[2025-05-21 14:36:32] TXT to PDF conversion failed.
+[2025-05-21 14:40:02] Conversion failed. Ensure `txt2pdf` is installed.
+[2025-05-21 14:40:02] TXT to PDF conversion failed.
+[2025-05-21 14:41:22] Conversion failed. Ensure `txt2pdf` is installed.
+[2025-05-21 14:41:22] TXT to PDF conversion failed.
+[2025-05-21 14:44:48] Conversion failed. Ensure `txt2pdf` is installed.
+[2025-05-21 14:44:48] TXT to PDF conversion failed.
+[2025-05-21 14:54:04] TXT to PDF conversion successful.
+[2025-05-21 14:54:04] TXT to PDF conversion successful.

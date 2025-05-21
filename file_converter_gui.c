@@ -4,6 +4,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <cairo.h>
+#include <cairo-pdf.h>
+#include <pango/pangocairo.h>
+#include <stdio.h>
 
 #define CMD_SIZE 1024
 #define MAX 256
@@ -770,17 +774,43 @@ void convert_pdf_to_txt(const char *input_file, const char *output_file) {
 }
 
 void convert_txt_to_pdf(const char *input_file, const char *output_file) {
-    char command[CMD_SIZE];
-    
-    snprintf(command, sizeof(command), "txt2pdf \"%s\" -o \"%s\"", input_file, output_file);
-    
-    if (system(command) == 0) {
-        show_message("TXT to PDF conversion successful.");
-        write_log("TXT to PDF conversion successful.");
-    } else {
-        show_message("Conversion failed. Ensure `txt2pdf` is installed.");
-        write_log("TXT to PDF conversion failed.");
+    FILE *file = fopen(input_file, "r");
+    if (!file) {
+        show_message("Failed to open input file.");
+        write_log("TXT to PDF conversion failed: Input file not found.");
+        return;
     }
+
+    cairo_surface_t *surface = cairo_pdf_surface_create(output_file, 595, 842); // A4
+    cairo_t *cr = cairo_create(surface);
+
+    PangoLayout *layout = pango_cairo_create_layout(cr);
+    PangoFontDescription *font = pango_font_description_from_string("Monospace 12");
+    pango_layout_set_font_description(layout, font);
+
+    char line[1024];
+    int y = 20;
+
+    while (fgets(line, sizeof(line), file)) {
+        cairo_move_to(cr, 40, y);
+        pango_layout_set_text(layout, line, -1);
+        pango_cairo_show_layout(cr, layout);
+        y += 18;
+
+        if (y > 800) {
+            cairo_show_page(cr);
+            y = 20;
+        }
+    }
+
+    fclose(file);
+    pango_font_description_free(font);
+    g_object_unref(layout);
+    cairo_destroy(cr);
+    cairo_surface_destroy(surface);
+
+    show_message("TXT to PDF conversion successful.");
+    write_log("TXT to PDF conversion successful.");
 }
 
 void convert_txt_to_html(const char *input_file, const char *output_file) {
